@@ -1,90 +1,160 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dinis Mendes | Game Designer & Producer</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dinis Mendes | Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <button id="toggleMode">🌙</button>
 
-  <header class="hero">
-    <div class="hero-content">
-      <h1>Dinis Mendes</h1>
-      <p class="title">🎮 Game Designer & Producer</p>
-      <p class="tagline">Transformo ideias em experiências jogáveis.</p>
+<div id="scroll-progress"></div>
+
+<nav class="top-nav">
+    <div class="user-header">
+        <h1 class="glitch-text">Dinis Mendes</h1>
+        <p class="role-text">Game Designer & Producer</p>
     </div>
-  </header>
-
-  <section id="sobre" class="card">
-    <h2>👾 Sobre Mim</h2>
-    <div class="sobre-grid">
-      <img src="image.jpg" alt="Dinis Mendes" class="perfil" />
-      <div class="bio">
-        <p><strong>Nome:</strong> Dinis Mendes</p>
-        <p><strong>Idade:</strong> 19 anos</p>
-        <p><strong>Localização:</strong> Santa Maria da Feira, Portugal</p>
-        <p>Sou apaixonado por criar mundos jogáveis que envolvem o jogador e o prendem ao jogo. Coordeno equipas, crio sistemas, e adoro contar histórias com interatividade.</p>
-        <blockquote>"Criador apaixonado por jogos que contam histórias."</blockquote>
-      </div>
+    <div class="theme-controls">
+        <span id="theme-icon">🌙</span>
+        <label class="switch">
+            <input type="checkbox" id="toggleMode">
+            <span class="slider round"></span>
+        </label>
     </div>
-  </section>
+</nav>
 
-  <section id="projetos" class="card">
-    <h2>🚀 Projetos</h2>
-    <div class="project-grid">
-      <div class="project-card">
-        <div class="img-wrapper">
-          <img src="Captura_de_ecra_2024-10-01_095325.png" alt="InTempo" class="project-img" />
+<main class="container">
+    <section id="sobre" class="intro-section">
+        <div class="bio-expanded">
+            <div class="perfil-container">
+                <img src="image.jpg" alt="Dinis Mendes" class="perfil-img-large">
+                <div class="perfil-glow"></div>
+            </div>
+            <div class="bio-content">
+                <div class="bio-header">
+                    <span class="bio-tag"><strong>Dinis Mendes</strong>, 20 anos</span>
+                    <span class="bio-tag">📍 Santa Maria da Feira, PT</span>
+                </div>
+                <p class="tagline-large">"Transformo ideias em experiências jogáveis."</p>
+                <p class="bio-description">
+                    Especializado em criar mecânicas imersivas e gerir ciclos de produção. 
+                    Focado em unir a visão criativa à viabilidade técnica.
+                </p>
+            </div>
         </div>
-        <h3>InTempo</h3>
-        <p>Jogo 2D de plataforma, puzzle e ritmo feito em Unity. Responsável por game design e level design.</p>
-        <video class="trailer" controls src="InTempoTrailer.mov"></video>
-        <div class="button-row">
-          <a class="btn" href="https://drive.google.com/uc?export=download&id=1T_CJLs136Ntpjyk-y52-LGouronBGJC0" download>⬇️ Download Build</a>
-        </div>
-      </div>
+    </section>
 
-      <div class="project-card">
-        <div class="img-wrapper">
-          <img src="doc.png" alt="BotBlast" class="project-img" />
+    <section id="skills">
+        <h2 class="section-label"><span>🛠️</span> Skills Técnicas</h2>
+        <div class="skills-bar">
+            <div class="skill-item" style="background: #ff4b2b;">Unity</div>
+            <div class="skill-item" style="background: #a855f7;">Godot</div>
+            <div class="skill-item" style="background: #22c55e;">Game Design</div>
+            <div class="skill-item" style="background: #3b82f6;">C#</div>
+            <div class="skill-item" style="background: #06b6d4;">Level Design</div>
+            <div class="skill-item" style="background: #ec4899;">Web</div>
+            <div class="skill-item" style="background: #475569;">Producer</div>
         </div>
-        <h3>BotBlast</h3>
-        <p>A Third Person Movement Platformer feito com Unreal. Coordenei uma equipa de 4 pessoas.</p>
-        <video class="trailer" controls src="BotBlastTrailer.mp4"></video>
-        <div class="button-row">
-          <a class="btn" href="#" onclick="event.preventDefault()" download>⬇️ ⌛Soon...</a>
+    </section>
+
+    <section id="projetos">
+        <h2 class="section-label"><span>🚀</span> Projetos</h2>
+        <div class="projects-grid">
+            
+            <div class="card-stack" onclick="openDetails('intempo')">
+                <div class="layer-1"></div>
+                <div class="layer-2"></div>
+                <div class="main-card">
+                    <div class="logo-wrapper">
+                        <img src="Captura_de_ecra_2024-10-01_095325.png" class="proj-logo-large">
+                        <div class="proj-overlay">
+                            <div class="overlay-info">
+                                <span class="badge">Role: Game Designer, Level Designer</span>
+                                <span class="badge">Engine: Unity</span>
+                                <p class="click-hint">(Clique para detalhes)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>InTempo</h3>
+                    <div class="video-box">
+                        <div class="video-container">
+                            <video class="trailer-vid" muted loop>
+                                <source src="InTempoTrailer.mov" type="video/mp4">
+                            </video>
+                            <button class="mute-btn">🔇</button>
+                        </div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1T_CJLs136Ntpjyk-y52-LGouronBGJC0/view?usp=drive_link" class="btn-main" onclick="event.stopPropagation()">⬇️ Download</a>
+                </div>
+            </div>
+
+            <div class="card-stack" onclick="openDetails('geozoo')">
+                <div class="layer-1"></div>
+                <div class="layer-2"></div>
+                <div class="main-card">
+                    <div class="logo-wrapper">
+                        <img src="logogeozoo.png" class="proj-logo-large">
+                        <div class="proj-overlay">
+                            <div class="overlay-info">
+                                <span class="badge">Role: Programer</span>
+                                <span class="badge">Engine: Unity</span>
+                                <p class="click-hint">(Clique para detalhes)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>GeoZoo</h3>
+                    <div class="video-box">
+                        <div class="video-container">
+                            <video class="trailer-vid" muted loop>
+                                <source src="GeoZooTrailer.mp4" type="video/mp4">
+                            </video>
+                            <button class="mute-btn">🔇</button>
+                        </div>
+                    </div>
+                    <div class="soon-badge">Soon</div>
+                </div>
+            </div>
+
         </div>
-      </div>
+    </section>
+
+    <section id="contactos" class="contact-section">
+        <h2 class="section-label"><span>📱</span> Contactos</h2>
+        <div class="contact-grid">
+            <a href="mailto:dinismiguelrm@gmail.com" class="contact-item">
+                <span class="icon">📧</span>
+                <div class="contact-text">
+                    <span class="label">Email:</span>
+                    <span class="value">dinismiguelrm@gmail.com</span>
+                </div>
+            </a>
+            <a href="tel:+351934011758" class="contact-item">
+                <span class="icon">📞</span>
+                <div class="contact-text">
+                    <span class="label">Telemóvel</span>
+                    <span class="value">+351 934 011 758</span>
+                </div>
+            </a>
+            <a href="https://linkedin.com/in/dinis-mendes" target="_blank" class="contact-item">
+                <span class="icon">🔗</span>
+                <div class="contact-text">
+                    <span class="label">LinkedIn</span>
+                    <span class="value">Dinis Mendes</span>
+                </div>
+            </a>
+        </div>
+    </section>
+</main>
+
+<div id="project-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modal-body"></div>
     </div>
-  </section>
+</div>
 
-  <section id="skills" class="card">
-    <h2>🧠 Skills Técnicas</h2>
-    <ul class="skills-list">
-      <li>Unity / Unreal / Godot</li>
-      <li>Game Design Document (GDD)</li>
-      <li>Produção Ágil (Jira)</li>
-      <li>HTML, CSS, JavaScript</li>
-      <li>Figma / Photoshop / Illustrator / Blender</li>
-    </ul>
-  </section>
-
-  <section id="contacto" class="card">
-    <h2>📬 Contacto</h2>
-    <p>Email: <a href="mailto:dinismiguelrm@gmail.com">dinismiguelrm@gmail.com</a></p>
-    <p>Links: <a href="#" target="_blank">LinkedIn</a></p>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Dinis Mendes | Todos os direitos reservados.</p>
-  </footer>
-
-  <script src="https://unpkg.com/scrollreveal"></script>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
