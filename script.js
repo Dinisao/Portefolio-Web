@@ -19,17 +19,6 @@ if (localStorage.getItem("theme") === "light") {
 // 2. GSAP - Animações de Entrada
 gsap.from(".glitch-text", { duration: 1, y: -50, opacity: 0, ease: "back.out" });
 gsap.from(".bio-expanded", { duration: 1.2, delay: 0.3, opacity: 0, x: -30, ease: "power2.out" });
-gsap.from(".card-stack", { 
-    duration: 0.8, 
-    opacity: 0, 
-    y: 50, 
-    stagger: 0.2, 
-    ease: "power2.out",
-    scrollTrigger: {
-        trigger: ".projects-grid",
-        start: "top 80%"
-    }
-});
 
 // 3. Scroll Progress
 window.addEventListener('scroll', () => {
@@ -60,22 +49,19 @@ document.querySelectorAll('.video-box').forEach(box => {
             video.muted = !video.muted;
             muteBtn.textContent = video.muted ? "🔇" : "🔊";
             muteBtn.classList.toggle("is-playing", !video.muted);
-            
             gsap.to(muteBtn, { scale: 1.2, duration: 0.1, yoyo: true, repeat: 1 });
         });
     }
 });
 
-// 5. Tilt das Cartas com GSAP (Apenas Desktop)
+// 5. Tilt das Cartas (Desktop)
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
 if (!isMobile) {
     document.querySelectorAll(".card-stack").forEach(card => {
         card.addEventListener("mousemove", (e) => {
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / rect.width - 0.5;
             const y = (e.clientY - rect.top) / rect.height - 0.5;
-            
             gsap.to(card, {
                 duration: 0.5,
                 rotateY: x * 15,
@@ -84,26 +70,27 @@ if (!isMobile) {
                 ease: "power2.out"
             });
         });
-
         card.addEventListener("mouseleave", () => {
             gsap.to(card, { duration: 0.5, rotateY: 0, rotateX: 0, ease: "power2.out" });
         });
     });
 }
 
-// 6. Modal Atualizado com Badges em Linhas Separadas
+// 6. Dados dos Projetos com Imagem
 const projectData = {
     intempo: {
         title: "InTempo",
-        description: "Foco no design de mecânicas de manipulação temporal e puzzles complexos. Responsável pela progressão de dificuldade no Unity.",
+        description: "Foco no design de mecânicas, Level design do level 2 (e partes de outros).<br><br>Ideia Chave: Rails",
         role: "Game Designer, Level Designer",
-        engine: "Unity"
+        engine: "Unity",
+        image: "Rail.png" // SUBSTITUA PELO SEU FICHEIRO
     },
     geozoo: {
         title: "GeoZoo",
         description: "Gestão completa da produção. Desenvolvimento de sistemas de economia e geolocalização.",
         role: "Programmer",
-        engine: "Unity"
+        engine: "Unity",
+        image: "geozoo_preview.jpg" // SUBSTITUA PELO SEU FICHEIRO
     }
 };
 
@@ -121,7 +108,11 @@ function openDetails(id) {
             <div class="blue-badge">Engine: ${data.engine}</div>
         </div>
 
-        <p style="line-height: 1.8; font-size: 16px; color: var(--text); opacity: 0.9;">${data.description}</p>
+        <p style="line-height: 1.8; font-size: 16px; color: var(--text); opacity: 0.9; margin-bottom: 25px;">${data.description}</p>
+
+        <div class="modal-image-container">
+            <img src="${data.image}" alt="${data.title}" class="modal-project-img">
+        </div>
     `;
     modal.style.display = 'flex';
     gsap.from(".modal-content", { duration: 0.4, scale: 0.8, opacity: 0, ease: "back.out" });
@@ -131,7 +122,7 @@ closeBtn.onclick = () => modal.style.display = 'none';
 window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
 window.addEventListener('keydown', (e) => { if(e.key === "Escape") modal.style.display = 'none'; });
 
-// Aplicar badges azuis nos cards iniciais (overlay)
+// Badges iniciais
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".overlay-info").forEach(info => {
         const badges = info.querySelectorAll(".badge");
