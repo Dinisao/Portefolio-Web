@@ -1,18 +1,13 @@
-// 1. Controle de Tema (Slider)
+// 1. Controle de Tema
 const toggle = document.getElementById("toggleMode");
 const body = document.body;
 const themeIcon = document.getElementById("theme-icon");
 
 toggle.addEventListener("change", () => {
-    if (toggle.checked) {
-        body.classList.add("light");
-        themeIcon.textContent = "☀️";
-        localStorage.setItem("theme", "light");
-    } else {
-        body.classList.remove("light");
-        themeIcon.textContent = "🌙";
-        localStorage.setItem("theme", "dark");
-    }
+    const isLight = toggle.checked;
+    body.classList.toggle("light", isLight);
+    themeIcon.textContent = isLight ? "☀️" : "🌙";
+    localStorage.setItem("theme", isLight ? "light" : "dark");
 });
 
 if (localStorage.getItem("theme") === "light") {
@@ -21,7 +16,22 @@ if (localStorage.getItem("theme") === "light") {
     themeIcon.textContent = "☀️";
 }
 
-// 2. Scroll Progress
+// 2. GSAP - Animações de Entrada
+gsap.from(".glitch-text", { duration: 1, y: -50, opacity: 0, ease: "back.out" });
+gsap.from(".bio-expanded", { duration: 1.2, delay: 0.3, opacity: 0, x: -30, ease: "power2.out" });
+gsap.from(".card-stack", { 
+    duration: 0.8, 
+    opacity: 0, 
+    y: 50, 
+    stagger: 0.2, 
+    ease: "power2.out",
+    scrollTrigger: {
+        trigger: ".projects-grid",
+        start: "top 80%"
+    }
+});
+
+// 3. Scroll Progress
 window.addEventListener('scroll', () => {
     const winScroll = document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -30,61 +40,70 @@ window.addEventListener('scroll', () => {
     if(bar) bar.style.width = scrolled + "%";
 });
 
-// Seleciona todas as caixas de vídeo do portfólio
+// 4. Vídeos e Mute
 document.querySelectorAll('.video-box').forEach(box => {
     const video = box.querySelector('video');
     const muteBtn = box.querySelector('.mute-btn');
 
-    // 1. Play ao passar o rato (Hover) apenas na área do vídeo
-    box.addEventListener('mouseenter', () => {
-        if (video) video.play();
-    });
-
-    // 2. Pause e Reset ao retirar o rato
+    box.addEventListener('mouseenter', () => video && video.play());
     box.addEventListener('mouseleave', () => {
         if (video) {
             video.pause();
-            video.currentTime = 0; // Opcional: volta ao início do vídeo
+            video.currentTime = 0;
         }
     });
 
-    // 3. Controlo de Som (Mute/Unmute)
     if (muteBtn && video) {
         muteBtn.addEventListener('click', (e) => {
-            // Evita que o clique no botão ative o Modal do card pai
             e.preventDefault();
             e.stopPropagation(); 
-            
             video.muted = !video.muted;
+            muteBtn.textContent = video.muted ? "🔇" : "🔊";
+            muteBtn.classList.toggle("is-playing", !video.muted);
             
-            // Atualiza o estado visual do botão
-            if (video.muted) {
-                muteBtn.textContent = "🔇";
-                muteBtn.classList.remove("is-playing");
-                muteBtn.style.background = "rgba(0, 210, 255, 0.1)";
-                muteBtn.style.color = "var(--accent)";
-            } else {
-                muteBtn.textContent = "🔊";
-                muteBtn.classList.add("is-playing"); // Ativa a animação de pulsação CSS
-                muteBtn.style.background = "var(--accent)";
-                muteBtn.style.color = "#000";
-            }
+            gsap.to(muteBtn, { scale: 1.2, duration: 0.1, yoyo: true, repeat: 1 });
         });
     }
 });
-// 4. Sistema de Modal (Detalhes dos Projetos)
+
+// 5. Tilt das Cartas com GSAP (Apenas Desktop)
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+if (!isMobile) {
+    document.querySelectorAll(".card-stack").forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            
+            gsap.to(card, {
+                duration: 0.5,
+                rotateY: x * 15,
+                rotateX: y * -15,
+                transformPerspective: 1000,
+                ease: "power2.out"
+            });
+        });
+
+        card.addEventListener("mouseleave", () => {
+            gsap.to(card, { duration: 0.5, rotateY: 0, rotateX: 0, ease: "power2.out" });
+        });
+    });
+}
+
+// 6. Modal Atualizado com Badges em Linhas Separadas
 const projectData = {
     intempo: {
         title: "InTempo",
-        description: "Neste projeto, foquei-me no design de mecânicas de manipulação temporal e na criação de puzzles complexos. Responsável pela progressão de dificuldade e integração de assets no Unity.",
-        role: "Game Designer",
-        engine: "Unity (C#)"
+        description: "Foco no design de mecânicas de manipulação temporal e puzzles complexos. Responsável pela progressão de dificuldade no Unity.",
+        role: "Game Designer, Level Designer",
+        engine: "Unity"
     },
     geozoo: {
         title: "GeoZoo",
-        description: "Gestão completa da produção e equipa. Desenvolvi o sistema de economia do jogo e as mecânicas de geolocalização para dispositivos móveis.",
-        role: "Producer",
-        engine: "Web / Godot"
+        description: "Gestão completa da produção. Desenvolvimento de sistemas de economia e geolocalização.",
+        role: "Programmer",
+        engine: "Unity"
     }
 };
 
@@ -95,31 +114,32 @@ const closeBtn = document.querySelector('.close-modal');
 function openDetails(id) {
     const data = projectData[id];
     modalBody.innerHTML = `
-        <h2 style="font-family: 'Orbitron'; color: var(--accent); margin-bottom: 20px;">${data.title}</h2>
-        <div style="margin-bottom: 20px;">
-            <span style="background:var(--border); padding:5px 10px; border-radius:5px; font-size:12px; margin-right:10px;">${data.role}</span>
-            <span style="background:var(--border); padding:5px 10px; border-radius:5px; font-size:12px;">${data.engine}</span>
+        <h2 style="font-family: 'Orbitron'; color: var(--accent); margin-bottom: 25px;">${data.title}</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+            <div class="blue-badge">Role: ${data.role}</div>
+            <div class="blue-badge">Engine: ${data.engine}</div>
         </div>
+
         <p style="line-height: 1.8; font-size: 16px; color: var(--text); opacity: 0.9;">${data.description}</p>
     `;
     modal.style.display = 'flex';
+    gsap.from(".modal-content", { duration: 0.4, scale: 0.8, opacity: 0, ease: "back.out" });
 }
 
 closeBtn.onclick = () => modal.style.display = 'none';
 window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
+window.addEventListener('keydown', (e) => { if(e.key === "Escape") modal.style.display = 'none'; });
 
-// 5. Tilt das Cartas (Otimizado)
-document.addEventListener("mousemove", (e) => {
-    document.querySelectorAll(".card-stack").forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const isInCard = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
-        
-        if (isInCard) {
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform = `perspective(1200px) rotateY(${x * 8}deg) rotateX(${y * -8}deg)`;
-        } else {
-            card.style.transform = `perspective(1200px) rotateY(0deg) rotateX(0deg)`;
-        }
+// Aplicar badges azuis nos cards iniciais (overlay)
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".overlay-info").forEach(info => {
+        const badges = info.querySelectorAll(".badge");
+        let html = "";
+        badges.forEach(b => {
+            html += `<div class="blue-badge">${b.textContent}</div>`;
+        });
+        html += `<p class="click-hint">(Clique para detalhes)</p>`;
+        info.innerHTML = html;
     });
 });
