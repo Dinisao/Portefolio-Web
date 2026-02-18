@@ -87,7 +87,7 @@ const projectData = {
     },
     geozoo: {
         title: "GeoZoo",
-        description: "Gestão completa da produção. Desenvolvimento de sistemas de economia e geolocalização.",
+        description: "I programmed how the player moves the tiles, developed a system to count the number of animals made, created a system that generates the grid where the player places the tiles and exposes utilities to resize pieces and return them to the players' hand.",
         role: "Programmer",
         engine: "Unity",
         image: "geozoo_preview.jpg" // SUBSTITUA PELO SEU FICHEIRO
