@@ -87,7 +87,7 @@ const projectData = {
     },
     geozoo: {
         title: "GeoZoo",
-        description: "I programmed how the player moves the tiles, developed a system to count the number of animals made, created a system that generates the grid where the player places the tiles and exposes utilities to resize pieces and return them to the players' hand.",
+        description: "I programmed how the player moves the tiles, developed a system to count the number of animals made, created a system that generates the grid where the player places the tiles and exposes utilities to resize pieces and return them to the players' hand. I programmed the UI and much more.",
         role: "Programmer",
         engine: "Unity",
         image: "geozoo_preview.jpg" // SUBSTITUA PELO SEU FICHEIRO
